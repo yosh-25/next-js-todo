@@ -13,10 +13,13 @@ const page = () => {
           <p className="outline-none">タイトル</p>
           <p>ステータス</p>
         </li>
+
+        <Link href="/">
         <li className="flex justify-between border-l-4 pl-14 pr-14 border-blue-500 bg-white rounded shadow p-3">
           <p className="outline-none">todo</p>
           <p>status</p>
         </li>
+        </Link>
         <li className="flex justify-between space-x-5 border-l-4 pl-14 pr-14 border-blue-500 bg-white rounded shadow p-3">
           <p className="outline-none">todo</p>
           <p>status</p>

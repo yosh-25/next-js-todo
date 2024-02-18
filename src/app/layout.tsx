@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SessionProvider from "../provider/SessionProvider"
 
 export const metadata: Metadata = {
   title: "Next.js Todo List",
@@ -12,11 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <SessionProvider>
     <html lang="ja">
       <body>
         <header>Next.js Todo List 後で調整</header>
         <div className="w-5/6 mx-auto">{children}</div>
       </body>
     </html>
+    </SessionProvider>
   );
 }
