@@ -1,50 +1,19 @@
-import NextAuth from 'next-auth';
-import type { NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
-import CredentialsProvider from 'next-auth/providers/credentials';
+type ClientType = {
+  clientId: string;
+  clientSecret: string;
+};
 
-import { auth } from '../../firebase/admin';
-
-
-
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
-    CredentialsProvider({
-      credentials: {},
-      authorize: async ({ idToken }: any, _req) => {
-        if (idToken) {
-          try {
-            const decoded = await auth.verifyIdToken(idToken);
-
-            return { ...decoded };
-          } catch (err) {
-            console.error(err);
-          }
-        }
-        return null;
-      },
-    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    } as ClientType),
   ],
-  session: {
-    strategy: "jwt",
-  },
-  callbacks: {
-    async jwt({ token, user }) {
-        if(user){
-      return { ...token, ...user };
-    } return token;
-    },
-    // sessionにJWTトークンからのユーザ情報を格納
-    async session({ session, token }) {
-        if (token.emailVerified !== undefined) {
-            session.user.emailVerified = token.emailVerified;
-          }
-          if (token.uid) {
-            session.user.uid = token.uid;
-          }
-      return session;
-    },
-  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
